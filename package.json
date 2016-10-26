@@ -1,0 +1,39 @@
+{
+  "name": "faces",
+  "version": "0.0.0",
+  "description": "My awesome site.",
+  "scripts": {
+    "start": "grunt server",
+    "ghpages": "grunt ghpages"
+  },
+  "homepage": "http://github.com/radiodario/faces",
+  "bugs": "http://github.com/radiodario/faces/issues",
+  "author": {
+    "name": "Darío Villanueva",
+    "email": "dario@alolo.co",
+    "url": "https://github.com/radiodario"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/radiodario/faces.git"
+  },
+  "dependencies": {
+    "noisejs": "^2.1.0",
+    "perlin-noise": "0.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^2.35.4",
+    "debowerify": "~0.1.3",
+    "grunt": "~0.4.1",
+    "grunt-browserify": "~1.2.0",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-less": "^0.9.0",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-ejs": "~0.1.0",
+    "grunt-gh-pages": "~0.6.0",
+    "matchdep": "~0.1.2"
+  }
+}
