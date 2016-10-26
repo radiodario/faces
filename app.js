@@ -341,7 +341,7 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-//draw();
+draw();
 
 },{"./faces":3}],3:[function(require,module,exports){
 var Noise = require('noisejs').Noise;
