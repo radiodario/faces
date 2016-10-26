@@ -2,6 +2,7 @@ var Noise = require('noisejs').Noise;
 var maxEyeHeight = 0.25;
 var maxEyeWidth = 0.25;
 var maxEyeDistance = 0.4;
+var maxMouthPos = 0.5;
 var maxMouthHeight = 0.5;
 var maxMouthWidth = 0.95;
 
@@ -23,10 +24,11 @@ function face(canvas) {
 
   const ctx = canvas.getContext('2d');
 
-  var leftEye, rightEye, leftPupil, rightPupil, nose, mouth, eyeDistance;
+  var leftEye, rightEye, leftPupil, rightPupil, nose, mouth, eyeDistance, mouthHeight;
 
   function update() {
     eyeDistance = maxEyeDistance * (1 + eyeNoise.perlin2(t/100, 0.05)) * 0.5;
+    mouthHeight = maxMouthPos * (1 + noise.perlin2(t/100, 0.04)) * 0.5;
     leftEye = {
       height: (1 + eyeNoise.perlin2(t/100, 0.01)) * 0.5 * faceHeight * maxEyeHeight,
       width: (1 + eyeNoise.perlin2(t/100, 0.1)) * 0.5 * faceWidth * maxEyeWidth
@@ -59,7 +61,7 @@ function face(canvas) {
       width: 0.5 * (1 + noise.perlin2(t/100, 0.85)) * faceWidth * maxMouthWidth,
       sadness: noise.perlin2(t/100, 0.9)
     };
-    t+=1;
+    t+=0.1;
   }
 
 
@@ -96,7 +98,7 @@ function face(canvas) {
 
   function drawMouth() {
     const x = faceWidth * 0.5;
-    const y = faceHeight * 0.75;
+    const y = faceHeight * 0.5 + faceHeight * mouthHeight;
     const startX = x - (mouth.width / 2);
     const startY = y;
     const endX = x + (mouth.width / 2);
