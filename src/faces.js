@@ -14,7 +14,7 @@ var faceWidth = 200;
 
 function face(canvas) {
 
-  let t = 0;
+  var t = 0;
 
   faceHeight = canvas.height;
   faceWidth = canvas.width;
@@ -22,7 +22,7 @@ function face(canvas) {
   var eyeNoise = new Noise(Math.random());
   var noise = new Noise(Math.random());
 
-  const ctx = canvas.getContext('2d');
+  var ctx = canvas.getContext('2d');
 
   var leftEye, rightEye, leftPupil, rightPupil, nose, mouth, eyeDistance, mouthHeight;
 
@@ -66,9 +66,9 @@ function face(canvas) {
 
 
   function drawEyes() {
-    const leftX = (faceWidth * 0.5) - (faceWidth * eyeDistance);
-    const rightX = (faceWidth * 0.5) + (faceWidth * eyeDistance);
-    const eyeY = faceHeight * 0.25;
+    var leftX = (faceWidth * 0.5) - (faceWidth * eyeDistance);
+    var rightX = (faceWidth * 0.5) + (faceWidth * eyeDistance);
+    var eyeY = faceHeight * 0.25;
     ctx.beginPath();
     ctx.ellipse(leftX, eyeY, leftEye.width, leftEye.height, 0, 0, 2*Math.PI);
     ctx.stroke();
@@ -76,10 +76,10 @@ function face(canvas) {
     ctx.ellipse(rightX, eyeY, rightEye.width, rightEye.height, 0, 0, 2*Math.PI);
     ctx.stroke();
     // pupil
-    const leftPupilX = leftX + (Math.sin(leftPupil.angle) * leftPupil.radius);
-    const rightPupilX = rightX + (Math.sin(rightPupil.angle) * rightPupil.radius);
-    const leftPupilY = eyeY + (Math.cos(leftPupil.angle) * leftPupil.radius);
-    const rightPupilY = eyeY + (Math.cos(rightPupil.angle) * rightPupil.radius);
+    var leftPupilX = leftX + (Math.sin(leftPupil.angle) * leftPupil.radius);
+    var rightPupilX = rightX + (Math.sin(rightPupil.angle) * rightPupil.radius);
+    var leftPupilY = eyeY + (Math.cos(leftPupil.angle) * leftPupil.radius);
+    var rightPupilY = eyeY + (Math.cos(rightPupil.angle) * rightPupil.radius);
     ctx.beginPath();
     ctx.ellipse(leftPupilX, leftPupilY, leftPupil.width, leftPupil.width, 0, 0, 2*Math.PI);
     ctx.fill();
@@ -89,24 +89,24 @@ function face(canvas) {
   }
 
   function drawNose() {
-    const x = faceWidth * 0.5;
-    const y = faceHeight * 0.5;
+    var x = faceWidth * 0.5;
+    var y = faceHeight * 0.5;
     ctx.beginPath();
     ctx.ellipse(x, y, nose.width, nose.height, 0, 0, 2*Math.PI);
     ctx.stroke();
   }
 
   function drawMouth() {
-    const x = faceWidth * 0.5;
-    const y = faceHeight * 0.5 + faceHeight * mouthHeight;
-    const startX = x - (mouth.width / 2);
-    const startY = y;
-    const endX = x + (mouth.width / 2);
-    const endY = y;
-    const cp1x = startX;
-    const cp2x = endX;
-    const cp1y = y + (mouth.height * mouth.sadness);
-    const cp2y = cp1y;
+    var x = faceWidth * 0.5;
+    var y = faceHeight * 0.5 + faceHeight * mouthHeight;
+    var startX = x - (mouth.width / 2);
+    var startY = y;
+    var endX = x + (mouth.width / 2);
+    var endY = y;
+    var cp1x = startX;
+    var cp2x = endX;
+    var cp1y = y + (mouth.height * mouth.sadness);
+    var cp2y = cp1y;
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);

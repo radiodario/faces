@@ -1,10 +1,8 @@
-let Faces = require('./faces');
+var Faces = require('./faces');
 
+var canvas = document.querySelector('canvas');
 
-const canvas = document.querySelector('canvas');
-
-const drawFace = Faces(canvas);
-
+var drawFace = Faces(canvas);
 
 function draw() {
   drawFace();
