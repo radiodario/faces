@@ -409,14 +409,14 @@ function face(canvas) {
     };
 
     leftPupil = {
-      angle : 2*Math.PI  * (1 + eyeNoise.perlin2(t/100, 0.1)),
-      radius : 0.5 * (1+ eyeNoise.perlin2(t/100, 0.12)) * leftEye.width * 0.5,
+      angle : 2 * Math.PI * eyeNoise.perlin2(t/100, 0.1),
+      radius : Math.abs(eyeNoise.perlin2(t/100, 0.92)) * leftEye.width,
       width : 0.5 * (1+ eyeNoise.perlin2(t/100, 0.15)) * leftEye.width * 0.5
     };
 
     rightPupil = {
-      angle : 2*Math.PI * (1 + eyeNoise.perlin2(t/100, 0.1)),
-      radius : 0.5 * (1+ eyeNoise.perlin2(t/100, 0.12)) * rightEye.width * 0.5,
+      angle : 2 * Math.PI * eyeNoise.perlin2(t/100, 0.1),
+      radius : Math.abs(eyeNoise.perlin2(t/100, 0.92)) * rightEye.width,
       width : 0.5 * (1+ eyeNoise.perlin2(t/100, 0.15)) * rightEye.width * 0.5
     };
 
