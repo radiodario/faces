@@ -328,22 +328,20 @@
 })(typeof module === "undefined" ? this : module.exports);
 
 },{}],2:[function(require,module,exports){
-//var Faces = require('./faces');
+var Faces = require('./faces');
 
+var canvas = document.querySelector('canvas');
 
-//var canvas = document.querySelector('canvas');
-//
-//var drawFace = Faces(canvas);
-//
-//
-//function draw() {
-//  drawFace();
-//  requestAnimationFrame(draw);
-//}
-//
-//draw();
+var drawFace = Faces(canvas);
 
-},{}],3:[function(require,module,exports){
+function draw() {
+  drawFace();
+  requestAnimationFrame(draw);
+}
+
+draw();
+
+},{"./faces":3}],3:[function(require,module,exports){
 var Noise = require('noisejs').Noise;
 var maxEyeHeight = 0.25;
 var maxEyeWidth = 0.25;
