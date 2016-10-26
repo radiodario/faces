@@ -356,12 +356,35 @@ var maxNoseWidth = 0.25;
 var faceHeight = 200;
 var faceWidth = 200;
 
+function backingScale(context) {
+    if ('devicePixelRatio' in window) {
+        if (window.devicePixelRatio > 1) {
+            return window.devicePixelRatio;
+        }
+    }
+    return 1;
+}
+
 function face(canvas) {
 
   var t = 0;
 
-  canvas.width = window.innerWidth * 0.7;
-  canvas.height = canvas.width;
+  var ctx = canvas.getContext('2d');
+
+  var scaleFactor = backingScale(ctx);
+
+  var w = (window.innerWidth) * 0.95;
+  var h = (window.innerHeight) * 0.95;
+
+  canvas.width = Math.min(w, h);
+  canvas.height = Math.min(w, h);
+
+  if (scaleFactor > 1) {
+    canvas.width = canvas.width * scaleFactor;
+    canvas.height = canvas.height * scaleFactor;
+
+    ctx = canvas.getContext('2d');
+  }
 
   faceHeight = canvas.height;
   faceWidth = canvas.width;
@@ -369,7 +392,6 @@ function face(canvas) {
   var eyeNoise = new Noise(Math.random());
   var noise = new Noise(Math.random());
 
-  var ctx = canvas.getContext('2d');
 
   var leftEye, rightEye, leftPupil, rightPupil, nose, mouth, eyeDistance, mouthHeight;
 

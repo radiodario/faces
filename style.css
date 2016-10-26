@@ -5,6 +5,16 @@
   height: 100vh;
   width: 100vw;
 }
+@media screen and (orientation: landscape) {
+  canvas {
+    height: 95vh;
+  }
+}
+@media screen and (orientation: portrait) {
+  canvas {
+    width: 95vw;
+  }
+}
 body,
 html {
   background: #feb645;
