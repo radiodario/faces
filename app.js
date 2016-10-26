@@ -374,11 +374,11 @@ function face(canvas) {
   var leftEye, rightEye, leftPupil, rightPupil, nose, mouth, eyeDistance, mouthHeight;
 
   function update() {
-    eyeDistance = maxEyeDistance * (1 + eyeNoise.perlin2(t/100, 0.05)) * 0.5;
+    eyeDistance = maxEyeDistance * (1 + eyeNoise.perlin2(t/100, 0.35)) * 0.5;
     mouthHeight = maxMouthPos * (1 + noise.perlin2(t/100, 0.04)) * 0.5;
     leftEye = {
-      height: (1 + eyeNoise.perlin2(t/100, 0.01)) * 0.5 * faceHeight * maxEyeHeight,
-      width: (1 + eyeNoise.perlin2(t/100, 0.1)) * 0.5 * faceWidth * maxEyeWidth
+      height: (1 + eyeNoise.perlin2(t/100, 0.15)) * 0.5 * faceHeight * maxEyeHeight,
+      width: (1 + eyeNoise.perlin2(t/100, 0.2)) * 0.5 * faceWidth * maxEyeWidth
     };
 
     rightEye = {
@@ -399,8 +399,8 @@ function face(canvas) {
     };
 
     nose = {
-      height: 0.5 * (1 + noise.perlin2(t/100, 0.6)) * faceHeight * maxNoseHeight,
-      width: 0.5 * (1 + noise.perlin2(t/100, 0.5)) * faceWidth * maxNoseWidth
+      height: 0.5 * (1 + noise.perlin2(t/100, 0.65)) * faceHeight * maxNoseHeight,
+      width: 0.5 * (1 + noise.perlin2(t/100, 0.35)) * faceWidth * maxNoseWidth
     };
 
     mouth = {
