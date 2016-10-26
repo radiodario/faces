@@ -360,6 +360,9 @@ function face(canvas) {
 
   var t = 0;
 
+  canvas.width = window.innerWidth * 0.7;
+  canvas.height = canvas.width;
+
   faceHeight = canvas.height;
   faceWidth = canvas.width;
 
@@ -396,8 +399,8 @@ function face(canvas) {
     };
 
     nose = {
-      height: 0.5 * (1 + noise.perlin2(t/100, 0.5)) * faceHeight * maxNoseHeight,
-      width: 0.5 * (1 + noise.perlin2(t/100, 0.55)) * faceWidth * maxNoseWidth
+      height: 0.5 * (1 + noise.perlin2(t/100, 0.6)) * faceHeight * maxNoseHeight,
+      width: 0.5 * (1 + noise.perlin2(t/100, 0.5)) * faceWidth * maxNoseWidth
     };
 
     mouth = {
@@ -413,11 +416,15 @@ function face(canvas) {
     var leftX = (faceWidth * 0.5) - (faceWidth * eyeDistance);
     var rightX = (faceWidth * 0.5) + (faceWidth * eyeDistance);
     var eyeY = faceHeight * 0.25;
+    ctx.lineWidth = faceWidth * 0.02;
+    ctx.fillStyle = "#FAEFEE";
     ctx.beginPath();
     ctx.ellipse(leftX, eyeY, leftEye.width, leftEye.height, 0, 0, 2*Math.PI);
+    ctx.fill();
     ctx.stroke();
     ctx.beginPath();
     ctx.ellipse(rightX, eyeY, rightEye.width, rightEye.height, 0, 0, 2*Math.PI);
+    ctx.fill();
     ctx.stroke();
     // pupil
     var leftPupilX = leftX + (Math.sin(leftPupil.angle) * leftPupil.radius);
@@ -425,6 +432,7 @@ function face(canvas) {
     var leftPupilY = eyeY + (Math.cos(leftPupil.angle) * leftPupil.radius);
     var rightPupilY = eyeY + (Math.cos(rightPupil.angle) * rightPupil.radius);
     ctx.beginPath();
+    ctx.fillStyle = "#000000";
     ctx.ellipse(leftPupilX, leftPupilY, leftPupil.width, leftPupil.width, 0, 0, 2*Math.PI);
     ctx.fill();
     ctx.beginPath();
@@ -436,7 +444,9 @@ function face(canvas) {
     var x = faceWidth * 0.5;
     var y = faceHeight * 0.5;
     ctx.beginPath();
+    ctx.fillStyle="#ff4625";
     ctx.ellipse(x, y, nose.width, nose.height, 0, 0, 2*Math.PI);
+    ctx.fill();
     ctx.stroke();
   }
 
@@ -447,8 +457,8 @@ function face(canvas) {
     var startY = y;
     var endX = x + (mouth.width / 2);
     var endY = y;
-    var cp1x = startX;
-    var cp2x = endX;
+    var cp1x = startX + 10;
+    var cp2x = endX - 10;
     var cp1y = y + (mouth.height * mouth.sadness);
     var cp2y = cp1y;
     ctx.beginPath();
