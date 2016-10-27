@@ -1,0 +1,23 @@
+{
+  "face" : {
+    "eyeDistance": 0.5,
+    "leftEyeHeight": 0.5,
+    "leftEyeWidth": 0.5,
+    "rightEyeHeight": 0.5,
+    "rightEyeWidth": 0.5,
+    "leftPupilAngle": 0,
+    "leftPupilRadius": 0,
+    "leftPupilWidth": 0.5,
+    "rightPupilAngle": 0,
+    "rightPupilRadius": 0,
+    "rightPupilWidth": 0.5,
+    "noseHeight": 0.5,
+    "noseWidth": 0.5,
+    "mouthX": 0.5,
+    "mouthHeight": 0.5,
+    "mouthWidth": 0.5,
+    "sadness": 0,
+    "randomize": true,
+    "timestep": 0.1
+  }
+}

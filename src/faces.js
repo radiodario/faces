@@ -1,13 +1,4 @@
-var Noise = require('noisejs').Noise;
-var maxEyeHeight = 0.25;
-var maxEyeWidth = 0.25;
-var maxEyeDistance = 0.4;
-var maxMouthPos = 0.5;
-var maxMouthHeight = 0.5;
-var maxMouthWidth = 0.95;
-
-var maxNoseHeight = 0.15;
-var maxNoseWidth = 0.25;
+var FaceModel = require('./faceModel');
 
 var faceHeight = 200;
 var faceWidth = 200;
@@ -45,99 +36,71 @@ function face(canvas) {
   faceHeight = canvas.height;
   faceWidth = canvas.width;
 
-  var eyeNoise = new Noise(Math.random());
-  var noise = new Noise(Math.random());
+  var faceModel = FaceModel(faceHeight, faceWidth);
 
-
-  var leftEye, rightEye, leftPupil, rightPupil, nose, mouth, eyeDistance, mouthHeight;
-
-  function update() {
-    eyeDistance = maxEyeDistance * (1 + eyeNoise.perlin2(t/100, 0.35)) * 0.5;
-    mouthHeight = maxMouthPos * (1 + noise.perlin2(t/100, 0.04)) * 0.5;
-    leftEye = {
-      height: (1 + eyeNoise.perlin2(t/100, 0.15)) * 0.5 * faceHeight * maxEyeHeight,
-      width: (1 + eyeNoise.perlin2(t/100, 0.2)) * 0.5 * faceWidth * maxEyeWidth
-    };
-
-    rightEye = {
-      height: 0.5 * (1 + eyeNoise.perlin2(t/100, 0.25)) * faceHeight * maxEyeHeight,
-      width: 0.5 * (1 + eyeNoise.perlin2(t/100, 0.3)) * faceWidth * maxEyeWidth
-    };
-
-    leftPupil = {
-      angle : 2 * Math.PI * eyeNoise.perlin2(t/100, 0.1),
-      radius : Math.abs(eyeNoise.perlin2(t/100, 0.92)) * leftEye.width,
-      width : 0.5 * (1+ eyeNoise.perlin2(t/100, 0.15)) * leftEye.width * 0.5
-    };
-
-    rightPupil = {
-      angle : 2 * Math.PI * eyeNoise.perlin2(t/100, 0.1),
-      radius : Math.abs(eyeNoise.perlin2(t/100, 0.92)) * rightEye.width,
-      width : 0.5 * (1+ eyeNoise.perlin2(t/100, 0.15)) * rightEye.width * 0.5
-    };
-
-    nose = {
-      height: 0.5 * (1 + noise.perlin2(t/100, 0.65)) * faceHeight * maxNoseHeight,
-      width: 0.5 * (1 + noise.perlin2(t/100, 0.35)) * faceWidth * maxNoseWidth
-    };
-
-    mouth = {
-      height: 0.5 * (1 + noise.perlin2(t/100, 0.75)) * faceHeight * maxMouthHeight,
-      width: 0.5 * (1 + noise.perlin2(t/100, 0.85)) * faceWidth * maxMouthWidth,
-      sadness: noise.perlin2(t/100, 0.9)
-    };
-    t+=0.1;
-  }
-
-
-  function drawEyes() {
-    var leftX = (faceWidth * 0.5) - (faceWidth * eyeDistance);
-    var rightX = (faceWidth * 0.5) + (faceWidth * eyeDistance);
-    var eyeY = faceHeight * 0.25;
+  function drawEyes(face) {
     ctx.lineWidth = faceWidth * 0.02;
     ctx.fillStyle = "#FAEFEE";
     ctx.beginPath();
-    ctx.ellipse(leftX, eyeY, leftEye.width, leftEye.height, 0, 0, 2*Math.PI);
+    ctx.ellipse(face.leftEye.x, face.leftEye.y, face.leftEye.width, face.leftEye.height, 0, 0, 2*Math.PI);
     ctx.fill();
     ctx.stroke();
     ctx.beginPath();
-    ctx.ellipse(rightX, eyeY, rightEye.width, rightEye.height, 0, 0, 2*Math.PI);
+    ctx.ellipse(face.rightEye.x, face.rightEye.y, face.rightEye.width, face.rightEye.height, 0, 0, 2*Math.PI);
     ctx.fill();
     ctx.stroke();
     // pupil
-    var leftPupilX = leftX + (Math.sin(leftPupil.angle) * leftPupil.radius);
-    var rightPupilX = rightX + (Math.sin(rightPupil.angle) * rightPupil.radius);
-    var leftPupilY = eyeY + (Math.cos(leftPupil.angle) * leftPupil.radius);
-    var rightPupilY = eyeY + (Math.cos(rightPupil.angle) * rightPupil.radius);
+    var leftPupilX = face.leftEye.x + (Math.cos(face.leftPupil.angle) * face.leftPupil.radius);
+    var rightPupilX = face.rightEye.x + (Math.cos(face.rightPupil.angle) * face.rightPupil.radius);
+    var leftPupilY = face.leftEye.y + (Math.sin(face.leftPupil.angle) * face.leftPupil.radius);
+    var rightPupilY = face.rightEye.y + (Math.sin(face.rightPupil.angle) * face.rightPupil.radius);
     ctx.beginPath();
     ctx.fillStyle = "#000000";
-    ctx.ellipse(leftPupilX, leftPupilY, leftPupil.width, leftPupil.width, 0, 0, 2*Math.PI);
+    ctx.ellipse(leftPupilX, leftPupilY, face.leftPupil.width, face.leftPupil.width, 0, 0, 2*Math.PI);
     ctx.fill();
     ctx.beginPath();
-    ctx.ellipse(rightPupilX, rightPupilY, rightPupil.width, rightPupil.width, 0, 0, 2*Math.PI);
+    ctx.ellipse(rightPupilX, rightPupilY, face.rightPupil.width, face.rightPupil.width, 0, 0, 2*Math.PI);
     ctx.fill();
   }
 
-  function drawNose() {
-    var x = faceWidth * 0.5;
-    var y = faceHeight * 0.5;
+  function drawNose(face) {
+    var x = face.nose.x;
+    var y = face.nose.y;
     ctx.beginPath();
     ctx.fillStyle="#ff4625";
-    ctx.ellipse(x, y, nose.width, nose.height, 0, 0, 2*Math.PI);
+    ctx.ellipse(x, y, face.nose.width, face.nose.height, 0, 0, 2*Math.PI);
     ctx.fill();
     ctx.stroke();
   }
 
-  function drawMouth() {
-    var x = faceWidth * 0.5;
-    var y = faceHeight * 0.5 + faceHeight * mouthHeight;
-    var startX = x - (mouth.width / 2);
+  function drawMouth(face) {
+    if (face.mouth.open > 0.001) {
+      drawOpenMouth(face);
+    } else {
+      drawClosedMouth(face);
+    }
+  }
+
+  function drawOpenMouth(face) {
+    var x = face.mouth.x;
+    var y = face.mouth.y;
+    ctx.beginPath();
+    ctx.fillStyle="#100";
+    ctx.ellipse(x, y, face.mouth.width/2, face.mouth.height*face.mouth.open, 0, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  function drawClosedMouth(face) {
+    var x = face.mouth.x;
+    var y = face.mouth.y;
+    var startX = x - (face.mouth.width / 2);
     var startY = y;
-    var endX = x + (mouth.width / 2);
+    var endX = x + (face.mouth.width / 2);
     var endY = y;
     var cp1x = startX + 10;
     var cp2x = endX - 10;
-    var cp1y = y + (mouth.height * mouth.sadness);
+    var cp1y = y + (face.mouth.height * face.sadness);
     var cp2y = cp1y;
     ctx.beginPath();
     ctx.moveTo(startX, startY);
@@ -145,12 +108,12 @@ function face(canvas) {
     ctx.stroke();
   }
 
-  return function drawFace() {
+  return function update(time) {
     ctx.clearRect(0, 0, canvas.height, canvas.width);
-    update();
-    drawNose();
-    drawEyes();
-    drawMouth();
+    var face = faceModel.compute(time);
+    drawEyes(face);
+    drawMouth(face);
+    drawNose(face);
   }
 }
 
