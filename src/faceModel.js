@@ -70,7 +70,7 @@ function FaceModel(faceHeight, faceWidth) {
     if (control.animationTime) {
       var tween = new TWEEN.Tween(face)
         .to(newFace, control.animationTime)
-        .easing(TWEEN.Easing.Quadratic.In)
+        //.easing(TWEEN.Easing.Quintic.Out)
         .start();
     } else {
       Object.assign(face, newFace);
