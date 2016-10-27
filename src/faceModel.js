@@ -45,6 +45,7 @@ var face = {
 
 var control = {
   randomize: false,
+  listen: true,
   timestep: 0.1,
   weight: 0.0001,
   animationTime: 1000
@@ -62,6 +63,7 @@ function FaceModel(faceHeight, faceWidth) {
 
   faceRef = facedb.ref('face');
   faceRef.on('value', function(snapshot) {
+    if (!control.listen) return;
     // newest value is king
     TWEEN.removeAll();
     var newFace = snapshot.val();
@@ -104,6 +106,7 @@ function FaceModel(faceHeight, faceWidth) {
   gui.add(face, 'mouthOpen', 0, 1).listen();
   gui.add(face, 'sadness', -1.0, 1.0).listen();
   gui.add(control, 'randomize').listen();
+  gui.add(control, 'listen').listen();
   gui.add(control, 'timestep', 0, 10).listen();
   gui.add(control, 'weight', 0, 0.01).listen();
 
