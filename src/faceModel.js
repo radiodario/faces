@@ -46,7 +46,8 @@ var face = {
 var control = {
   randomize: false,
   timestep: 0.1,
-  weight: 0.0001
+  weight: 0.0001,
+  animationTime: 1000
 };
 
 function FaceModel(faceHeight, faceWidth) {
@@ -64,10 +65,14 @@ function FaceModel(faceHeight, faceWidth) {
     // newest value is king
     TWEEN.removeAll();
     var newFace = snapshot.val();
-    var tween = new TWEEN.Tween(face)
-      .to(newFace, 200)
-      .easing(TWEEN.Easing.Quadratic.In)
-      .start();
+    if (control.animationTime) {
+      var tween = new TWEEN.Tween(face)
+        .to(newFace, control.animationTime)
+        .easing(TWEEN.Easing.Quadratic.In)
+        .start();
+    } else {
+      Object.assign(face, newFace);
+    }
   });
 
   controlRef = facedb.ref('control');
