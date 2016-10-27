@@ -1,5 +1,5 @@
 var FaceModel = require('./faceModel');
-var Gui = require('dat-gui');
+
 var faceHeight = 200;
 var faceWidth = 200;
 
@@ -90,12 +90,12 @@ function face(canvas) {
     ctx.stroke();
   }
 
-  return function drawFace() {
+  return function update(time) {
     ctx.clearRect(0, 0, canvas.height, canvas.width);
-    var face = faceModel.compute();
-    drawNose(face);
+    var face = faceModel.compute(time);
     drawEyes(face);
     drawMouth(face);
+    drawNose(face);
   }
 }
 
