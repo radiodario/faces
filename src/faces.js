@@ -74,7 +74,7 @@ function face(canvas) {
   }
 
   function drawMouth(face) {
-    if (face.mouth.open > 0.001) {
+    if (face.mouth.open > 0.005) {
       drawOpenMouth(face);
     } else {
       drawClosedMouth(face);
