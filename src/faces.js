@@ -1,5 +1,5 @@
 var FaceModel = require('./faceModel');
-var Gui
+var Gui = require('dat-gui');
 var faceHeight = 200;
 var faceWidth = 200;
 

@@ -1,4 +1,5 @@
 var Noise = require('noisejs').Noise;
+var dat = require('dat-gui');
 
 var maxEyeHeight = 0.25;
 var maxEyeWidth = 0.25;
@@ -10,10 +11,14 @@ var maxMouthWidth = 0.95;
 var maxNoseHeight = 0.15;
 var maxNoseWidth = 0.25;
 
+
 function FaceModel(faceHeight, faceWidth) {
 
   var eyeNoise = new Noise(Math.random());
   var noise = new Noise(Math.random());
+  var gui = new dat.GUI();
+  dat.GUI.toggleHide();
+
 
   var face = {
     eyeDistance : 0.5,
@@ -32,7 +37,8 @@ function FaceModel(faceHeight, faceWidth) {
     mouthX : 0.5,
     mouthHeight: 0.5,
     mouthWidth: 0.5,
-    sadness: 0
+    sadness: 0,
+    randomize: true
   }
   var t = 0;
 
@@ -40,6 +46,25 @@ function FaceModel(faceHeight, faceWidth) {
   function perlin1(x, y) {
     return (1 + noise.perlin2(x, y)) * 0.5;
   }
+
+  gui.add(face, 'eyeDistance', 0, 1).listen();
+  gui.add(face, 'leftEyeHeight', 0, 1).listen();
+  gui.add(face, 'leftEyeWidth', 0, 1).listen();
+  gui.add(face, 'rightEyeHeight', 0, 1).listen();
+  gui.add(face, 'rightEyeWidth', 0, 1).listen();
+  gui.add(face, 'leftPupilAngle', 0, 1).listen();
+  gui.add(face, 'leftPupilRadius', 0, 1).listen();
+  gui.add(face, 'leftPupilWidth', 0, 1).listen();
+  gui.add(face, 'rightPupilAngle', 0, 1).listen();
+  gui.add(face, 'rightPupilRadius', 0, 1).listen();
+  gui.add(face, 'rightPupilWidth', 0, 1).listen();
+  gui.add(face, 'noseHeight', 0, 1).listen();
+  gui.add(face, 'noseWidth', 0, 1).listen();
+  gui.add(face, 'mouthX', 0, 1).listen();
+  gui.add(face, 'mouthHeight', 0, 1).listen();
+  gui.add(face, 'mouthWidth', 0, 1).listen();
+  gui.add(face, 'sadness', -1, 1).listen();
+  gui.add(face, 'randomize').listen();
 
   // randomly walks the space of possible faces by using noise
   face.randomTick = function() {
@@ -65,6 +90,9 @@ function FaceModel(faceHeight, faceWidth) {
 
   // translates the face from normalised values to draw space values
   face.compute = function compute() {
+    if (face.randomize) {
+      face.randomTick();
+    }
     var computedFace = {};
     computedFace.eyeDistance = maxEyeDistance * face.eyeDistance;
     computedFace.mouthHeight = maxMouthPos * face.mouthX;
