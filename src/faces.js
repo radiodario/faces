@@ -73,25 +73,8 @@ function face(canvas) {
     ctx.stroke();
   }
 
+
   function drawMouth(face) {
-    if (face.mouth.open > 0.005) {
-      drawOpenMouth(face);
-    } else {
-      drawClosedMouth(face);
-    }
-  }
-
-  function drawOpenMouth(face) {
-    var x = face.mouth.x;
-    var y = face.mouth.y;
-    ctx.beginPath();
-    ctx.fillStyle="#100";
-    ctx.ellipse(x, y, face.mouth.width/2, face.mouth.height*face.mouth.open, 0, 0, 2*Math.PI);
-    ctx.fill();
-    ctx.stroke();
-  }
-
-  function drawClosedMouth(face) {
     var x = face.mouth.x;
     var y = face.mouth.y;
     var startX = x - (face.mouth.width / 2);
@@ -105,6 +88,16 @@ function face(canvas) {
     ctx.beginPath();
     ctx.moveTo(startX, startY);
     ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+    var cp3x = cp2x;
+    var cp3y = y + (face.mouth.height * face.sadness) * (1 - (face.mouth.open*2));
+    var cp4x = cp1x;
+    var cp4y = cp3y;
+    ctx.bezierCurveTo(cp3x, cp3y, cp4x, cp4y, startX, startY);
+    ctx.closePath();
+    ctx.fillStyle="#100";
+    ctx.fill();
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
     ctx.stroke();
   }
 
