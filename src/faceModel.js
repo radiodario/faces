@@ -37,6 +37,7 @@ var face = {
   noseHeight: 0.5,
   noseWidth: 0.5,
   mouthX : 0.5,
+  mouthOpen : 0,
   mouthHeight: 0.5,
   mouthWidth: 0.5,
   sadness: 0.0
@@ -95,6 +96,7 @@ function FaceModel(faceHeight, faceWidth) {
   gui.add(face, 'mouthX', 0, 1).listen();
   gui.add(face, 'mouthHeight', 0, 1).listen();
   gui.add(face, 'mouthWidth', 0, 1).listen();
+  gui.add(face, 'mouthOpen', 0, 1).listen();
   gui.add(face, 'sadness', -1.0, 1.0).listen();
   gui.add(control, 'randomize').listen();
   gui.add(control, 'timestep', 0, 10).listen();
@@ -168,7 +170,8 @@ function FaceModel(faceHeight, faceWidth) {
       x: faceWidth * 0.5,
       y: faceHeight * 0.5 + (faceHeight * 0.5 * face.mouthX),
       height: face.mouthHeight * faceHeight * maxMouthHeight,
-      width: face.mouthWidth * faceWidth * maxMouthWidth
+      width: face.mouthWidth * faceWidth * maxMouthWidth,
+      open: face.mouthOpen
     };
     computedFace.sadness = face.sadness;
     return computedFace

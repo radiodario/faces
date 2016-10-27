@@ -74,6 +74,24 @@ function face(canvas) {
   }
 
   function drawMouth(face) {
+    if (face.mouth.open > 0.001) {
+      drawOpenMouth(face);
+    } else {
+      drawClosedMouth(face);
+    }
+  }
+
+  function drawOpenMouth(face) {
+    var x = face.mouth.x;
+    var y = face.mouth.y;
+    ctx.beginPath();
+    ctx.fillStyle="#100";
+    ctx.ellipse(x, y, face.mouth.width/2, face.mouth.height*face.mouth.open, 0, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  function drawClosedMouth(face) {
     var x = face.mouth.x;
     var y = face.mouth.y;
     var startX = x - (face.mouth.width / 2);
