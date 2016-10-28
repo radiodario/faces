@@ -6405,11 +6405,21 @@ var face = {
   leftEyeWidth : 0.5,
   rightEyeHeight : 0.5,
   rightEyeWidth : 0.5,
+  leftEyebrowY: 0.25,
+  rightEyebrowY: 0.25,
+  leftEyebrowHeight: 0.5,
+  leftEyebrowWidth: 0.5,
+  rightEyebrowHeight: 0.5,
+  rightEyebrowWidth: 0.5,
+  leftEyebrowAngle: 0.5,
+  rightEyebrowAngle: 0.5,
+  rightEyebrowSadness : 0.5,
+  leftEyebrowSadness : 0.5,
   leftPupilAngle : 0.0,
   leftPupilRadius : 0.0,
   leftPupilWidth: 0.5,
-  rightPupilAngle : 0,
-  rightPupilRadius : 0,
+  rightPupilAngle : 0.0,
+  rightPupilRadius : 0.0,
   rightPupilWidth: 0.5,
   noseHeight: 0.5,
   noseWidth: 0.5,
@@ -6434,7 +6444,7 @@ function FaceModel(faceHeight, faceWidth) {
   var noise = new Noise(Math.random());
   var gui = new dat.GUI();
   dat.GUI.toggleHide();
-
+  gui.close();
   var t = 0;
 
 
@@ -6469,6 +6479,16 @@ function FaceModel(faceHeight, faceWidth) {
   gui.add(face, 'leftEyeWidth', 0, 1).listen();
   gui.add(face, 'rightEyeHeight', 0, 1).listen();
   gui.add(face, 'rightEyeWidth', 0, 1).listen();
+  gui.add(face, 'leftEyebrowY', 0, 1).listen();
+  gui.add(face, 'leftEyebrowWidth', 0, 1).listen();
+  gui.add(face, 'leftEyebrowHeight', 0, 1).listen();
+  gui.add(face, 'leftEyebrowAngle', 0, 1).listen();
+  gui.add(face, 'leftEyebrowSadness', 0, 1).listen();
+  gui.add(face, 'rightEyebrowY', 0, 1).listen();
+  gui.add(face, 'rightEyebrowWidth', 0, 1).listen();
+  gui.add(face, 'rightEyebrowHeight', 0, 1).listen();
+  gui.add(face, 'rightEyebrowAngle', 0, 1).listen();
+  gui.add(face, 'rightEyebrowSadness', 0, 1).listen();
   gui.add(face, 'leftPupilAngle', 0, 1).listen();
   gui.add(face, 'leftPupilRadius', 0, 1).listen();
   gui.add(face, 'leftPupilWidth', 0, 1).listen();
@@ -6531,6 +6551,28 @@ function FaceModel(faceHeight, faceWidth) {
       height: face.rightEyeHeight * faceHeight * maxEyeHeight,
       width: face.rightEyeWidth * faceWidth * maxEyeWidth
     };
+
+    var eyebrowYSpace = faceHeight * 0.25;
+    var eyebrowXSpace = faceHeight * 0.51;
+    computedFace.leftEyebrow = {
+      x : computedFace.leftEye.x,
+      // maybe invert this
+      y : eyebrowYSpace * face.leftEyebrowY,
+      height: eyebrowYSpace * face.leftEyebrowHeight,
+      width: eyebrowXSpace * face.leftEyebrowWidth,
+      angle: (2 * face.leftEyebrowAngle) - 1,
+      sadness: (2 * face.leftEyebrowSadness) -1
+    }
+
+    computedFace.rightEyebrow = {
+      x : computedFace.rightEye.x,
+      // maybe invert this
+      y : eyebrowYSpace * face.rightEyebrowY,
+      height: eyebrowYSpace * face.rightEyebrowHeight,
+      width: eyebrowXSpace * face.rightEyebrowWidth,
+      sadness: (2 * face.rightEyebrowSadness) - 1,
+      angle: (-2 * face.rightEyebrowAngle) + 1
+    }
 
     computedFace.leftPupil = {
       angle : 2 * Math.PI * face.leftPupilAngle,
@@ -6643,6 +6685,42 @@ function face(canvas) {
     ctx.stroke();
   }
 
+  function drawEyebrow(eyebrow) {
+    var x = eyebrow.x;
+    var y = eyebrow.y;
+    var hh = eyebrow.height * 0.5;
+    var hw = eyebrow.width * 0.5;
+    var startX = x - hw;
+    var startY = y - (hh * eyebrow.angle);
+    var endX = x + hw;
+    var endY = y + (hh * eyebrow.angle);
+    var cp1x = startX;
+    var cp2x = endX;
+    var cp1y = startY - (hh * eyebrow.sadness);
+    var cp2y = endY - (hh * eyebrow.sadness);
+
+    ctx.beginPath();
+    ctx.moveTo(startX - ctx.lineWidth, 0);
+    ctx.lineTo(startX - ctx.lineWidth, startY + (ctx.lineWidth * eyebrow.sadness));
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX + ctx.lineWidth, endY + (ctx.lineWidth * eyebrow.sadness));
+    ctx.lineTo(endX + ctx.lineWidth, 0);
+    ctx.closePath();
+    ctx.fillStyle="#feb645";
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+  }
+
+  function drawEyebrows(face) {
+    drawEyebrow(face.leftEyebrow);
+    drawEyebrow(face.rightEyebrow);
+  }
 
   function drawMouth(face) {
     var x = face.mouth.x;
@@ -6672,9 +6750,11 @@ function face(canvas) {
   }
 
   return function update(time) {
-    ctx.clearRect(0, 0, canvas.height, canvas.width);
+    ctx.fillStyle = "#feb645";
+    ctx.fillRect(0, 0, canvas.height, canvas.width);
     var face = faceModel.compute(time);
     drawEyes(face);
+    drawEyebrows(face);
     drawMouth(face);
     drawNose(face);
   }
@@ -6682,5 +6762,5 @@ function face(canvas) {
 
 module.exports = face;
 
-},{"./faceModel":14}]},{},[13,15,14])
+},{"./faceModel":14}]},{},[13,14,15])
 ;
