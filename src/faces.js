@@ -73,6 +73,42 @@ function face(canvas) {
     ctx.stroke();
   }
 
+  function drawEyebrow(eyebrow) {
+    var x = eyebrow.x;
+    var y = eyebrow.y;
+    var hh = eyebrow.height * 0.5;
+    var hw = eyebrow.width * 0.5;
+    var startX = x - hw;
+    var startY = y - (hh * eyebrow.angle);
+    var endX = x + hw;
+    var endY = y + (hh * eyebrow.angle);
+    var cp1x = startX;
+    var cp2x = endX;
+    var cp1y = startY - (hh * eyebrow.sadness);
+    var cp2y = endY - (hh * eyebrow.sadness);
+
+    ctx.beginPath();
+    ctx.moveTo(startX - ctx.lineWidth, 0);
+    ctx.lineTo(startX - ctx.lineWidth, startY + (ctx.lineWidth * eyebrow.sadness));
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX + ctx.lineWidth, endY + (ctx.lineWidth * eyebrow.sadness));
+    ctx.lineTo(endX + ctx.lineWidth, 0);
+    ctx.closePath();
+    ctx.fillStyle="#feb645";
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+  }
+
+  function drawEyebrows(face) {
+    drawEyebrow(face.leftEyebrow);
+    drawEyebrow(face.rightEyebrow);
+  }
 
   function drawMouth(face) {
     var x = face.mouth.x;
@@ -102,9 +138,11 @@ function face(canvas) {
   }
 
   return function update(time) {
-    ctx.clearRect(0, 0, canvas.height, canvas.width);
+    ctx.fillStyle = "#feb645";
+    ctx.fillRect(0, 0, canvas.height, canvas.width);
     var face = faceModel.compute(time);
     drawEyes(face);
+    drawEyebrows(face);
     drawMouth(face);
     drawNose(face);
   }

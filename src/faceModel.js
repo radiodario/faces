@@ -28,11 +28,21 @@ var face = {
   leftEyeWidth : 0.5,
   rightEyeHeight : 0.5,
   rightEyeWidth : 0.5,
+  leftEyebrowY: 0.25,
+  rightEyebrowY: 0.25,
+  leftEyebrowHeight: 0.5,
+  leftEyebrowWidth: 0.5,
+  rightEyebrowHeight: 0.5,
+  rightEyebrowWidth: 0.5,
+  leftEyebrowAngle: 0.5,
+  rightEyebrowAngle: 0.5,
+  rightEyebrowSadness : 0.5,
+  leftEyebrowSadness : 0.5,
   leftPupilAngle : 0.0,
   leftPupilRadius : 0.0,
   leftPupilWidth: 0.5,
-  rightPupilAngle : 0,
-  rightPupilRadius : 0,
+  rightPupilAngle : 0.0,
+  rightPupilRadius : 0.0,
   rightPupilWidth: 0.5,
   noseHeight: 0.5,
   noseWidth: 0.5,
@@ -57,7 +67,7 @@ function FaceModel(faceHeight, faceWidth) {
   var noise = new Noise(Math.random());
   var gui = new dat.GUI();
   dat.GUI.toggleHide();
-
+  gui.close();
   var t = 0;
 
 
@@ -92,6 +102,16 @@ function FaceModel(faceHeight, faceWidth) {
   gui.add(face, 'leftEyeWidth', 0, 1).listen();
   gui.add(face, 'rightEyeHeight', 0, 1).listen();
   gui.add(face, 'rightEyeWidth', 0, 1).listen();
+  gui.add(face, 'leftEyebrowY', 0, 1).listen();
+  gui.add(face, 'leftEyebrowWidth', 0, 1).listen();
+  gui.add(face, 'leftEyebrowHeight', 0, 1).listen();
+  gui.add(face, 'leftEyebrowAngle', 0, 1).listen();
+  gui.add(face, 'leftEyebrowSadness', 0, 1).listen();
+  gui.add(face, 'rightEyebrowY', 0, 1).listen();
+  gui.add(face, 'rightEyebrowWidth', 0, 1).listen();
+  gui.add(face, 'rightEyebrowHeight', 0, 1).listen();
+  gui.add(face, 'rightEyebrowAngle', 0, 1).listen();
+  gui.add(face, 'rightEyebrowSadness', 0, 1).listen();
   gui.add(face, 'leftPupilAngle', 0, 1).listen();
   gui.add(face, 'leftPupilRadius', 0, 1).listen();
   gui.add(face, 'leftPupilWidth', 0, 1).listen();
@@ -154,6 +174,28 @@ function FaceModel(faceHeight, faceWidth) {
       height: face.rightEyeHeight * faceHeight * maxEyeHeight,
       width: face.rightEyeWidth * faceWidth * maxEyeWidth
     };
+
+    var eyebrowYSpace = faceHeight * 0.25;
+    var eyebrowXSpace = faceHeight * 0.51;
+    computedFace.leftEyebrow = {
+      x : computedFace.leftEye.x,
+      // maybe invert this
+      y : eyebrowYSpace * face.leftEyebrowY,
+      height: eyebrowYSpace * face.leftEyebrowHeight,
+      width: eyebrowXSpace * face.leftEyebrowWidth,
+      angle: (2 * face.leftEyebrowAngle) - 1,
+      sadness: (2 * face.leftEyebrowSadness) -1
+    }
+
+    computedFace.rightEyebrow = {
+      x : computedFace.rightEye.x,
+      // maybe invert this
+      y : eyebrowYSpace * face.rightEyebrowY,
+      height: eyebrowYSpace * face.rightEyebrowHeight,
+      width: eyebrowXSpace * face.rightEyebrowWidth,
+      sadness: (2 * face.rightEyebrowSadness) - 1,
+      angle: (-2 * face.rightEyebrowAngle) + 1
+    }
 
     computedFace.leftPupil = {
       angle : 2 * Math.PI * face.leftPupilAngle,
