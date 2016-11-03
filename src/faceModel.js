@@ -94,7 +94,7 @@ function FaceModel(faceHeight, faceWidth) {
 
   // separate data from display
   function perlin1(x, y) {
-    return control.weight * noise.perlin2(x, y);
+    return control.weight * (1 + noise.perlin2(x, y)) * 0.5;
   }
 
   gui.add(face, 'eyeDistance', 0, 1).listen();
@@ -132,23 +132,23 @@ function FaceModel(faceHeight, faceWidth) {
 
   // randomly walks the space of possible faces by using noise
   face.randomTick = function() {
-    face.eyeDistance += perlin1(t/100, 0.35);
-    face.leftEyeHeight += perlin1(t/100, 0.15);
-    face.leftEyeWidth += perlin1(t/100, 0.2);
-    face.rightEyeHeight += perlin1(t/100, 0.25);
-    face.rightEyeWidth += perlin1(t/100, 0.3);
-    face.leftPupilAngle += perlin1(t/100, 0.1);
-    face.leftPupilRadius += perlin1(t/100, 0.92);
-    face.leftPupilWidth += perlin1(t/100, 0.15)
-    face.rightPupilAngle += perlin1(t/100, 0.1);
-    face.rightPupilRadius += perlin1(t/100, 0.92);
-    face.rightPupilWidth += perlin1(t/100, 0.15)
-    face.noseWidth += perlin1(t/100, 0.65);
-    face.noseHeight += perlin1(t/100, 0.35);
-    face.mouthX += perlin1(t/100, 0.04);
-    face.mouthHeight += perlin1(t/100, 0.75);
-    face.mouthWidth += perlin1(t/100, 0.85);
-    face.sadness += perlin1(t/100, 0.9);
+    face.eyeDistance = perlin1(t/100, 0.35);
+    face.leftEyeHeight = perlin1(t/100, 0.15);
+    face.leftEyeWidth = perlin1(t/100, 0.2);
+    face.rightEyeHeight = perlin1(t/100, 0.25);
+    face.rightEyeWidth = perlin1(t/100, 0.3);
+    face.leftPupilAngle = perlin1(t/100, 0.1);
+    face.leftPupilRadius = perlin1(t/100, 0.92);
+    face.leftPupilWidth = perlin1(t/100, 0.15)
+    face.rightPupilAngle = perlin1(t/100, 0.1);
+    face.rightPupilRadius = perlin1(t/100, 0.92);
+    face.rightPupilWidth = perlin1(t/100, 0.15)
+    face.noseWidth = perlin1(t/100, 0.65);
+    face.noseHeight = perlin1(t/100, 0.35);
+    face.mouthX = perlin1(t/100, 0.04);
+    face.mouthHeight = perlin1(t/100, 0.75);
+    face.mouthWidth = perlin1(t/100, 0.85);
+    face.sadness = perlin1(t/100, 0.9);
     t += control.timestep;
   }
 
